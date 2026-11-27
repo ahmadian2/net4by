@@ -17,6 +17,10 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+      STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
+      KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
     steps:
       - name: Check out source
         uses: actions/checkout@v4
@@ -35,23 +39,22 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Build signed release APK
-        if: ${{ secrets.KEYSTORE_BASE64 != '' && secrets.STORE_PASSWORD != '' && secrets.KEY_PASSWORD != '' }}
-        env:
-          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
-          STORE_PASSWORD: ${{ secrets.STORE_PASSWORD }}
-          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      - name: Build APK
+        id: build
+        shell: bash
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > my-upload-key.jks
-          export KEYSTORE_PATH="$GITHUB_WORKSPACE/my-upload-key.jks"
-          gradle --no-daemon :app:assembleRelease
-
-      - name: Build debug APK (signing key not configured)
-        if: ${{ secrets.KEYSTORE_BASE64 == '' || secrets.STORE_PASSWORD == '' || secrets.KEY_PASSWORD == '' }}
-        run: gradle --no-daemon :app:assembleDebug
+          if [[ -n "$KEYSTORE_BASE64" && -n "$STORE_PASSWORD" && -n "$KEY_PASSWORD" ]]; then
+            echo "$KEYSTORE_BASE64" | base64 --decode > "$GITHUB_WORKSPACE/my-upload-key.jks"
+            export KEYSTORE_PATH="$GITHUB_WORKSPACE/my-upload-key.jks"
+            gradle --no-daemon :app:assembleRelease
+            echo "signed=true" >> "$GITHUB_OUTPUT"
+          else
+            gradle --no-daemon :app:assembleDebug
+            echo "signed=false" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Upload signed release APK
-        if: ${{ secrets.KEYSTORE_BASE64 != '' && secrets.STORE_PASSWORD != '' && secrets.KEY_PASSWORD != '' }}
+        if: steps.build.outputs.signed == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: net4by-release-apk
@@ -59,8 +62,8 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
-      - name: Upload debug APK
-        if: ${{ secrets.KEYSTORE_BASE64 == '' || secrets.STORE_PASSWORD == '' || secrets.KEY_PASSWORD == '' }}
+      - name: Upload debug APK (testing only)
+        if: steps.build.outputs.signed != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: net4by-debug-apk-not-for-market
@@ -71,9 +74,9 @@ jobs:
       - name: Explain signing status
         if: always()
         run: |
-          if [ -f app/build/outputs/apk/release/app-release.apk ]; then
+          if [ "${{ steps.build.outputs.signed }}" = "true" ]; then
             echo "Signed release APK built." >> "$GITHUB_STEP_SUMMARY"
           else
-            echo "A debug APK was built. It is for testing only, not market distribution." >> "$GITHUB_STEP_SUMMARY"
-            echo "Add KEYSTORE_BASE64, STORE_PASSWORD, and KEY_PASSWORD as GitHub Actions secrets to build a signed release APK." >> "$GITHUB_STEP_SUMMARY"
+            echo "Debug APK built for testing only; it is not suitable for market distribution." >> "$GITHUB_STEP_SUMMARY"
+            echo "Configure KEYSTORE_BASE64, STORE_PASSWORD, and KEY_PASSWORD repository secrets to build a signed release APK." >> "$GITHUB_STEP_SUMMARY"
           fi
