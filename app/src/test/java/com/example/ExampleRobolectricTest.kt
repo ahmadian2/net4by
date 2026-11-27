@@ -12,7 +12,9 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [36])
+// Robolectric currently fails to create the API 36 SDK provider in CI.
+// API 35 covers these context and parser unit tests without changing app targetSdk.
+@Config(sdk = [35])
 class ExampleRobolectricTest {
 
   @Test
