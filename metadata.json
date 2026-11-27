@@ -1,0 +1,6 @@
+{
+  "name": "پیوند نت",
+  "description": "ابزار ساده و پایدار اشتراک‌گذاری اینترنت VPN گوشی به کامپیوتر از طریق USB و Wi-Fi Direct",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">پیوند نت</string>
+    <string name="nav_home">صفحه اصلی</string>
+    <string name="nav_settings">تنظیمات</string>
+
+    <string name="status_connected">متصل</string>
+    <string name="status_connecting">در حال اتصال…</string>
+    <string name="status_disconnected">قطع</string>
+    <string name="status_error">خطا در اتصال</string>
+
+    <string name="action_start_sharing">شروع اشتراک‌گذاری</string>
+    <string name="action_stop_sharing">توقف اشتراک‌گذاری</string>
+    <string name="action_copy">کپی</string>
+    <string name="copied_to_clipboard">کپی شد</string>
+
+    <string name="vpn_active">VPN گوشی فعال است</string>
+    <string name="vpn_inactive">VPN گوشی غیرفعال است</string>
+    <string name="usb_connected">کابل USB متصل</string>
+    <string name="usb_disconnected">کابل USB قطع</string>
+
+    <string name="stats_title">آمار مصرف داده</string>
+    <string name="stats_received">دریافت شده</string>
+    <string name="stats_sent">ارسال شده</string>
+    <string name="stats_total">مجموع جلسه</string>
+    <string name="stats_duration">مدت اتصال</string>
+    <string name="stats_connections">اتصال فعال</string>
+
+    <string name="mode_usb">کابل USB</string>
+    <string name="mode_usb_desc">انتقال ترافیک VPN گوشی از طریق کابل USB و تونل ADB با کمترین تاخیر</string>
+    <string name="mode_wifi_direct">Wi-Fi Direct</string>
+    <string name="mode_wifi_direct_desc">ساخت شبکه بی‌سیم مستقیم بین گوشی و کامپیوتر بدون نیاز به کابل</string>
+
+    <string name="notification_channel_name">وضعیت اشتراک‌گذاری اینترنت</string>
+    <string name="notification_channel_desc">اعلان پایدار برای فعال ماندن اشتراک‌گذاری اینترنت VPN در پس‌زمینه</string>
+    <string name="notification_title">اشتراک‌گذاری اینترنت فعال است</string>
+    <string name="notification_stop">توقف</string>
+
+    <string name="perm_title_notifications">مجوز نمایش اعلان پایدار</string>
+    <string name="perm_desc_notifications">برای پایدار ماندن سرویس در پس‌زمینه و جلوگیری از قطع شدن اتصال توسط سیستم اندروید، نمایش یک اعلان وضعیت الزامی است.</string>
+    <string name="perm_title_wifi_direct">مجوز دستگاه‌های Wi-Fi نزدیک</string>
+    <string name="perm_desc_wifi_direct">برای ایجاد گروه Wi-Fi Direct و اتصال بی‌سیم کامپیوتر به VPN گوشی، اندروید نیاز به دسترسی کشف و مدیریت Wi-Fi نزدیک دارد. هیچ داده‌ای از موقعیت مکانی شما ذخیره یا ارسال نمی‌شود.</string>
+    <string name="perm_grant">تایید و ادامه</string>
+    <string name="perm_cancel">انصراف</string>
+</resources>
